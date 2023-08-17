@@ -22,110 +22,116 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.black26,
-        border: Border.all(color: Colors.white, width: 0.5),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomText(text: "Change Password", color: Colors.lightGreenAccent,fontSize: 20,fontWeight: FontWeight.bold,),
-                ButtonWidget(textColor: Colors.white, background: Colors.black26, borderColor: Colors.black26,buttonName: "", icon: const Icon(Icons.close, color: Colors.white,), onPressed: (){},),
-              ],
+    return AlertDialog(
+      content: Container(
+        width: 600,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          border: Border.all(color: Colors.white, width: 0.5),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(text: "Change Password", color: Colors.lightGreenAccent,fontSize: 20,fontWeight: FontWeight.bold,),
+                  ButtonWidget(textColor: Colors.white, background: Colors.black26, borderColor: Colors.black26,buttonName: "", icon: const Icon(Icons.close, color: Colors.white,), onPressed: (){Navigator.pop(context);},),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: 5,),
-          Container(
-          height: 0.5,
-            decoration: BoxDecoration(
-              color: Colors.white30,
-              border: Border.all(color: Colors.white, width: 0.5),
+            SizedBox(height: 5,),
+            Container(
+            height: 0.5,
+              decoration: BoxDecoration(
+                color: Colors.white30,
+                border: Border.all(color: Colors.white, width: 0.5),
+              ),
             ),
-          ),
-          Container(
-            padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20,),
-                CustomText(text: "Current password", color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(color: Colors.white30,width: 0.5),
+            Container(
+              padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20,),
+                  CustomText(text: "Current password", color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold,),
+                  const SizedBox(height: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(color: Colors.white30,width: 0.5),
+                    ),
+                    child: TextFieldWidget(
+                      controller: c1,
+                      hint: 'Enter Your Current Password',
+                      secureText: isSec1,
+                      icon: const Icon(Icons.lock_open),
+                      suffix: ButtonWidget(textColor: Colors.black, background: Colors.black, borderColor: Colors.black,buttonName: "",icon: isSec1? Icon(Icons.visibility, color: Colors.white,):Icon(Icons.visibility_off, color: Colors.white),
+                        onPressed: (){setState(() {
+                          isSec1 = !isSec1;
+                        });},),),
                   ),
-                  child: TextFieldWidget(
-                    controller: c1,
-                    hint: 'Enter Your Current Password',
-                    secureText: isSec1,
-                    icon: const Icon(Icons.lock_open),
-                    suffix: ButtonWidget(textColor: Colors.black, background: Colors.black, borderColor: Colors.black,buttonName: "",icon: isSec1? Icon(Icons.visibility, color: Colors.white,):Icon(Icons.visibility_off, color: Colors.white),
-                      onPressed: (){setState(() {
-                        isSec1 = !isSec1;
-                      });},),),
-                ),
-                const SizedBox(height: 30,),
-                CustomText(text: "New password", color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(color: Colors.white30,width: 0.5),
+                  const SizedBox(height: 30,),
+                  CustomText(text: "New password", color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold,),
+                  const SizedBox(height: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(color: Colors.white30,width: 0.5),
+                    ),
+                    child: TextFieldWidget(
+                      controller: c2,
+                      hint: 'Enter Your New Password',
+                      secureText: isSec2,
+                      icon: const Icon(Icons.lock_open),
+                      suffix: ButtonWidget(textColor: Colors.black, background: Colors.black, borderColor: Colors.black,buttonName: "",icon: isSec2? Icon(Icons.visibility, color: Colors.white,):Icon(Icons.visibility_off, color: Colors.white),
+                        onPressed: (){setState(() {
+                          isSec2 = !isSec2;
+                        });},),),
                   ),
-                  child: TextFieldWidget(
-                    controller: c2,
-                    hint: 'Enter Your New Password',
-                    secureText: isSec2,
-                    icon: const Icon(Icons.lock_open),
-                    suffix: ButtonWidget(textColor: Colors.black, background: Colors.black, borderColor: Colors.black,buttonName: "",icon: isSec2? Icon(Icons.visibility, color: Colors.white,):Icon(Icons.visibility_off, color: Colors.white),
-                      onPressed: (){setState(() {
-                        isSec2 = !isSec2;
-                      });},),),
-                ),
-                const SizedBox(height: 30,),
-                CustomText(text: "Confirm new password", color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold,),
-                Container(
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    border: Border.all(color: Colors.white30,width: 0.5),
+                  const SizedBox(height: 30,),
+                  CustomText(text: "Confirm new password", color: Colors.white,fontSize: 16,fontWeight: FontWeight.bold,),
+                  const SizedBox(height: 10,),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(color: Colors.white30,width: 0.5),
+                    ),
+                    child: TextFieldWidget(
+                      controller: c3,
+                      hint: 'Enter Your New Password Again',
+                      secureText: isSec3,
+                      icon: const Icon(Icons.lock_open),
+                      suffix: ButtonWidget(textColor: Colors.black, background: Colors.black, borderColor: Colors.black,buttonName: "",icon: isSec3? Icon(Icons.visibility, color: Colors.white,):Icon(Icons.visibility_off, color: Colors.white),
+                        onPressed: (){setState(() {
+                          isSec3 = !isSec3;
+                        });},),),
                   ),
-                  child: TextFieldWidget(
-                    controller: c3,
-                    hint: 'Enter Your New Current Password Again',
-                    secureText: isSec3,
-                    icon: const Icon(Icons.lock_open),
-                    suffix: ButtonWidget(textColor: Colors.black, background: Colors.black, borderColor: Colors.black,buttonName: "",icon: isSec3? Icon(Icons.visibility, color: Colors.white,):Icon(Icons.visibility_off, color: Colors.white),
-                      onPressed: (){setState(() {
-                        isSec3 = !isSec3;
-                      });},),),
-                ),
-                const SizedBox(height: 30,),
+                  const SizedBox(height: 30,),
 
-              ],
+                ],
+              ),
             ),
-          ),
-          const SizedBox(
-            height: 25,
-          ),
-          Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                ButtonWidget(textColor: CColors.primary, background: Colors.black26, borderColor: CColors.primary,buttonName: "Cancel", onPressed: (){},),
-                const SizedBox(width: 20,),
-                ButtonWidget(textColor: Colors.black, background: CColors.primary, borderColor: CColors.primary,buttonName: "Save", onPressed: (){},),
-                const SizedBox(width: 50,),
-              ],
+            const SizedBox(
+              height: 25,
             ),
-          )
+            Container(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ButtonWidget(textColor: CColors.primary, background: Colors.black26, borderColor: CColors.primary,buttonName: "Cancel", onPressed: (){Navigator.pop(context);},),
+                  const SizedBox(width: 20,),
+                  ButtonWidget(textColor: Colors.black, background: CColors.primary, borderColor: CColors.primary,buttonName: "Save", onPressed: (){},),
+                  const SizedBox(width: 50,),
+                ],
+              ),
+            )
 
-    ],
+      ],
+        ),
       ),
     );
   }
