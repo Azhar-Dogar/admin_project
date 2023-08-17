@@ -40,6 +40,7 @@ dependencies:
   firebase_storage: ^11.2.6
   provider: ^6.0.5
   cloud_firestore: ^4.8.5
+  syncfusion_flutter_datepicker: ^22.2.9
 dev_dependencies:
   flutter_test:
     sdk: flutter

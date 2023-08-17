@@ -1,4 +1,5 @@
 import 'package:admin_project/firebase_options.dart';
+import 'package:admin_project/providers/event_provider.dart';
 import 'package:admin_project/providers/song_provider.dart';
 import 'package:admin_project/screens/Auth/login_screen.dart';
 import 'package:admin_project/screens/Dashboard_screen.dart';
@@ -11,7 +12,8 @@ void main() async{
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(MultiProvider(
       providers: [
-        ChangeNotifierProvider<SongProvider>(create: (_)=>SongProvider())
+        ChangeNotifierProvider<SongProvider>(create: (_)=>SongProvider()),
+        ChangeNotifierProvider<EventProvider>(create: (_)=>EventProvider())
       ],
       child: const MyApp()));
 }
