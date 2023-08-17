@@ -4,6 +4,8 @@ import 'package:admin_project/screens/dashboard/events_management.dart';
 import 'package:admin_project/screens/dashboard/songs_management.dart';
 import 'package:flutter/material.dart';
 
+import 'dashboard/user_profile.dart';
+
 class DashBoardScreen extends StatefulWidget {
   const DashBoardScreen({super.key});
 
@@ -18,6 +20,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     Category(name: "Event Management", index: 1, icon: Icons.calendar_month),
     Category(name: "Band Profile", index: 2, icon: Icons.person)
   ];
+  List<Category> categoriesProfile = [
+    Category(name: "My Profile", index: 0, icon: Icons.person),
+    Category(name: "Change Profile", index: 1, icon: Icons.lock_open),
+    Category(name: "Logout", index: 2, icon: Icons.logout)
+  ];
+
   late double width,height;
   @override
   Widget build(BuildContext context) {
@@ -47,7 +55,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   SizedBox(width: width * 0.1,),
                   if(selected == 0)...[
                     const Expanded(
-                    child: SongsManagement(),
+                    child: UserProfile(),
                   )]else if(selected == 1)...[
                     const Expanded(child: EventManagement())
                   ]else...[
@@ -115,18 +123,23 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
           ],
         ),
-        Row(
-          children: [
-            const Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            CustomText(text: "Riz"),
-            const Icon(
-              Icons.keyboard_arrow_down,
-              color: Colors.white,
-            ),
-          ],
+        InkWell(
+          child: Row(
+            children: [
+              const Icon(
+                Icons.person,
+                color: Colors.white,
+              ),
+              CustomText(text: "Riz", ),
+              const Icon(
+                Icons.keyboard_arrow_down,
+                color: Colors.white,
+              ),
+            ],
+          ),
+          onTap: (){
+
+          },
         )
       ],
     );

@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'custom_text.dart';
 
 class ButtonWidget extends StatelessWidget {
-  ButtonWidget({super.key, required this.buttonName,  this.icon,this.onPressed});
-  String buttonName;
+  ButtonWidget({super.key, this.buttonName,  this.icon,this.onPressed, this.background});
+  String? buttonName;
   Icon? icon;
+  Color? background;
   void Function()? onPressed;
   @override
   late double width, height;
@@ -17,14 +18,14 @@ class ButtonWidget extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: height * 0.06,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: Colors.yellow),
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: background ?? Colors.yellow),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
           child: Row(
             children: [
               icon??const SizedBox(),
               CustomText(
-                text: buttonName,
+                text: buttonName!,
                 color: Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
