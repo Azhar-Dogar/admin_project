@@ -4,6 +4,8 @@ import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../extras/colors.dart';
+
 class BandProfile extends StatefulWidget {
   const BandProfile({super.key});
 
@@ -39,6 +41,7 @@ class _BandProfileState extends State<BandProfile> {
               fontSize: 16,
             ),
             ButtonWidget(
+                textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
                 onPressed: () {
                   showDialog(
                       context: context,

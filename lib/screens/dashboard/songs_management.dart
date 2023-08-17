@@ -13,6 +13,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../../extras/colors.dart';
+
 class SongsManagement extends StatefulWidget {
   const SongsManagement({super.key});
 
@@ -197,7 +199,9 @@ class _SongsManagementState extends State<SongsManagement> {
               children: [
                 Column(
                   children: [
-                    ButtonWidget(buttonName: "Upload poster"),
+                    ButtonWidget(
+                        textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
+                        buttonName: "Upload poster"),
                     const SizedBox(
                       height: 5,
                     ),
@@ -211,6 +215,7 @@ class _SongsManagementState extends State<SongsManagement> {
                 Column(
                   children: [
                     ButtonWidget(
+                      textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
                       buttonName: "Upload song",
                       onPressed: () async {
                         FilePickerResult? file = await FilePicker.platform

@@ -3,6 +3,7 @@ import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../extras/colors.dart';
 import '../../widgets/custom_text.dart';
 
 class EventManagement extends StatefulWidget {
@@ -119,6 +120,7 @@ class _EventManagementState extends State<EventManagement> {
               width: width * 0.02,
             ),
             ButtonWidget(
+                textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
                 onPressed: () {
                   showDialog(context: context, builder: (_) => eventDialogue());
                 },
@@ -175,6 +177,7 @@ class _EventManagementState extends State<EventManagement> {
                 Column(
                   children: [
                     ButtonWidget(
+                      textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
                       buttonName: "Upload poster",
                       icon: const Icon(
                         Icons.upload,
