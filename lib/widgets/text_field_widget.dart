@@ -17,6 +17,7 @@ class TextFieldWidget extends StatelessWidget {
     this.backColor,
     this.onSubmitted,
     this.height,
+    this.icon,
     Key? key,
   }) : super(key: key);
   void Function(String)? onChanged;
@@ -32,10 +33,11 @@ class TextFieldWidget extends StatelessWidget {
   Widget? suffix;
   Widget? prefixWidget;
   double? fontSize;
-
+  Icon? icon;
   @override
   Widget build(BuildContext context) {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (prefixWidget != null)
           Row(
@@ -66,6 +68,7 @@ class TextFieldWidget extends StatelessWidget {
               //contentPadding: EdgeInsets.zero,
               hintText: hint,
               border: InputBorder.none,
+              prefixIcon: icon,
               // isDense: true,
               hintStyle: TextStyle(fontSize: 16,color: Colors.grey.shade500)),
             ),
