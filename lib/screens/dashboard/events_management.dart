@@ -119,9 +119,9 @@ class _EventManagementState extends State<EventManagement> {
               width: width * 0.02,
             ),
             ButtonWidget(
-              onPressed: (){
-                showDialog(context: context, builder: (_)=>eventDialogue());
-              },
+                onPressed: () {
+                  showDialog(context: context, builder: (_) => eventDialogue());
+                },
                 buttonName: "Create Event",
                 icon: const Icon(
                   Icons.add_circle_outline,
@@ -132,6 +132,7 @@ class _EventManagementState extends State<EventManagement> {
       ],
     );
   }
+
   Widget eventDialogue() {
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
@@ -173,7 +174,13 @@ class _EventManagementState extends State<EventManagement> {
               children: [
                 Column(
                   children: [
-                    ButtonWidget(buttonName: "Upload poster",icon: const Icon(Icons.upload,color: Colors.black,),),
+                    ButtonWidget(
+                      buttonName: "Upload poster",
+                      icon: const Icon(
+                        Icons.upload,
+                        color: Colors.black,
+                      ),
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -197,23 +204,39 @@ class _EventManagementState extends State<EventManagement> {
                   Row(
                     children: [
                       Expanded(child: textField("Name")),
-                      const SizedBox(width: 10,),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       Expanded(child: textField("Venue")),
                     ],
-                  ),const SizedBox(height: 20,),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     children: [
-                      Expanded(child: textField("Start date and time",isDate: true,hint: "Select start sate and time")),
-                      const SizedBox(width: 10,),
-                      Expanded(child: textField("End date and time",isDate: true,hint: "Select end date and time")),
+                      Expanded(
+                          child: textField("Start date and time",
+                              isDate: true,
+                              hint: "Select start sate and time")),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: textField("End date and time",
+                              isDate: true, hint: "Select end date and time")),
                     ],
                   ),
-                  const SizedBox(height: 20,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   textField("Description"),
                 ],
               ),
             ),
-            const SizedBox(height: 10,),
+            const SizedBox(
+              height: 10,
+            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
@@ -265,35 +288,45 @@ class _EventManagementState extends State<EventManagement> {
       ),
     );
   }
-  Widget textField(String name,{String? hint,bool? isDate}){
+
+  Widget textField(String name, {String? hint, bool? isDate}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(text: name),
         Container(
-          margin: const EdgeInsets.only(top: 4),
-          height: height * 0.06,
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade500),color: Colors.black),
+            margin: const EdgeInsets.only(top: 4),
+            height: height * 0.06,
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade500),
+                color: Colors.black),
             child: Padding(
               padding: const EdgeInsets.only(left: 5.0),
               child: Row(
                 children: [
-                  Expanded(child: TextFieldWidget(controller: controller, hint: hint??"Enter ${name.toLowerCase()}")),
-                  if(isDate == true)...[
-                  Row(
-                    children: [
-                      Container(
-                        width: 1,
-                        color: Colors.grey.shade500,
-                      ),
-                      const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 3.0),
-                        child: Icon(Icons.calendar_month,color: Colors.white,),
-                      ),
-                    ],
-                  )
-                ]],
+                  Expanded(
+                      child: TextFieldWidget(
+                          controller: controller,
+                          hint: hint ?? "Enter ${name.toLowerCase()}")),
+                  if (isDate == true) ...[
+                    Row(
+                      children: [
+                        Container(
+                          width: 1,
+                          color: Colors.grey.shade500,
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 3.0),
+                          child: Icon(
+                            Icons.calendar_month,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    )
+                  ]
+                ],
               ),
             ))
       ],
