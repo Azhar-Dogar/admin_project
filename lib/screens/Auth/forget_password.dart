@@ -3,6 +3,8 @@ import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:flutter/material.dart';
 
+import '../../extras/colors.dart';
+
 class ForgetPassword extends StatefulWidget {
   const ForgetPassword({Key? key}) : super(key: key);
 
@@ -48,7 +50,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             ),
           ),
           Container(
-            padding: EdgeInsets.only(left: 30, right: 30, top: 20),
+            padding: const EdgeInsets.only(left: 30, right: 30, top: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -105,6 +107,20 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 ),
                 const SizedBox(height: 30,),
 
+              ],
+            ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ButtonWidget(textColor: CColors.primary, background: Colors.black26, borderColor: CColors.primary,buttonName: "Cancel", onPressed: (){},),
+                const SizedBox(width: 20,),
+                ButtonWidget(textColor: Colors.black, background: CColors.primary, borderColor: CColors.primary,buttonName: "Save", onPressed: (){},),
+                const SizedBox(width: 50,),
               ],
             ),
           )

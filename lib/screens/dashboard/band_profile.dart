@@ -40,8 +40,9 @@ class _BandProfileState extends State<BandProfile> {
               fontWeight: FontWeight.w600,
               fontSize: 16,
             ),
+
             ButtonWidget(
-                textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
+                textColor: Colors.black, background: CColors.primary, borderColor: Colors.black,
                 onPressed: () {
                   showDialog(
                       context: context,

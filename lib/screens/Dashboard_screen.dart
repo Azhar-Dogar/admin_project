@@ -13,6 +13,7 @@ class DashBoardScreen extends StatefulWidget {
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
+enum SampleItem { itemOne, itemTwo, itemThree }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   int selected = 0;
@@ -21,13 +22,9 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     Category(name: "Event Management", index: 1, icon: Icons.calendar_month),
     Category(name: "Band Profile", index: 2, icon: Icons.person)
   ];
-  List<Category> categoriesProfile = [
-    Category(name: "My Profile", index: 0, icon: Icons.person),
-    Category(name: "Change Profile", index: 1, icon: Icons.lock_open),
-    Category(name: "Logout", index: 2, icon: Icons.logout)
-  ];
 
   late double width,height;
+  SampleItem? selectedMenu;
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -56,11 +53,14 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   SizedBox(width: width * 0.1,),
                   if(selected == 0)...[
                     const Expanded(
-                    child: ForgetPassword(),
+                    child: SongsManagement(),
                   )]else if(selected == 1)...[
                     const Expanded(child: EventManagement())
-                  ]else...[
-                     Expanded(child: SingleChildScrollView(child: BandProfile()))
+                  ]else if(selected == 2)...[
+                    const Expanded(child: SingleChildScrollView(child: BandProfile()))
+                  ]
+                  else ...[
+                     const Expanded(child: UserProfile())
                   ]
                 ],
               ),
@@ -124,24 +124,46 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
             ),
           ],
         ),
-        InkWell(
-          child: Row(
-            children: [
-              const Icon(
-                Icons.person,
-                color: Colors.white,
+        MenuAnchor(
+          builder:
+              (BuildContext context, MenuController controller, Widget? child) {
+            return InkWell(
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.person,
+                    color: Colors.white,
+                  ),
+                  CustomText(text: "Riz", ),
+                  const Icon(
+                    Icons.keyboard_arrow_down,
+                    color: Colors.white,
+                  ),
+                ],
               ),
-              CustomText(text: "Riz", ),
-              const Icon(
-                Icons.keyboard_arrow_down,
-                color: Colors.white,
-              ),
-            ],
-          ),
-          onTap: (){
-
+              onTap: (){
+                  if(controller.isOpen){
+                    controller.close();
+                  }else{
+                    controller.open();
+                  }
+              },
+            );
           },
-        )
+          menuChildren: List<MenuItemButton>.generate(
+            3,
+                (int index) => MenuItemButton(
+              onPressed: () =>
+                  setState((){
+                    selectedMenu = SampleItem.values[index];
+                    selected = 3;
+                  }),
+              child: Text('Item ${index + 1}'),
+            ),
+          ),
+        ),
+
+
       ],
     );
   }

@@ -2,6 +2,7 @@ import 'package:admin_project/widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../extras/colors.dart';
 import '../../widgets/button_widget.dart';
 import '../../widgets/text_field_widget.dart';
 
@@ -42,6 +43,8 @@ class _UserProfileState extends State<UserProfile> {
               Visibility(
                 visible: isReadOnly,
                 child: ButtonWidget(
+                  borderColor: Colors.black,
+                  textColor: Colors.black,
                   icon: const Icon(
                     Icons.edit,
                     color: Colors.white,
@@ -128,6 +131,8 @@ class _UserProfileState extends State<UserProfile> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ButtonWidget(
+                  textColor: CColors.primary,
+                  borderColor: CColors.primary,
                   buttonName: "Cancel",
                   onPressed: (){setState(() {
                     isReadOnly = !isReadOnly;
@@ -136,11 +141,13 @@ class _UserProfileState extends State<UserProfile> {
                 ),
                 const SizedBox(width: 20,),
                 ButtonWidget(
+                  textColor: Colors.black,
+                  borderColor: CColors.primary,
                   buttonName: "Save",
                   onPressed: (){setState(() {
                     isReadOnly = !isReadOnly;
                   });},
-                  background: Colors.lightGreenAccent,
+                  background: CColors.primary,
                 )
               ],
             ),

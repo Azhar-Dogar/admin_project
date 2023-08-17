@@ -120,7 +120,7 @@ class _EventManagementState extends State<EventManagement> {
               width: width * 0.02,
             ),
             ButtonWidget(
-                textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
+                textColor: Colors.black, background: CColors.primary, borderColor: Colors.black,
                 onPressed: () {
                   showDialog(context: context, builder: (_) => eventDialogue());
                 },
@@ -177,7 +177,7 @@ class _EventManagementState extends State<EventManagement> {
                 Column(
                   children: [
                     ButtonWidget(
-                      textColor: CColors.black, background: CColors.primary, borderColor: CColors.black,
+                      textColor: Colors.black, background: CColors.primary, borderColor: Colors.black,
                       buttonName: "Upload poster",
                       icon: const Icon(
                         Icons.upload,
