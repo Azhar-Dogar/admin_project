@@ -15,7 +15,6 @@ class DashBoardScreen extends StatefulWidget {
   @override
   State<DashBoardScreen> createState() => _DashBoardScreenState();
 }
-enum SampleItem { itemOne, itemTwo, itemThree }
 
 class _DashBoardScreenState extends State<DashBoardScreen> {
   int selected = 0;
@@ -25,14 +24,18 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     Category(name: "Band Profile", index: 2, icon: Icons.person)
   ];
 
-  late double width,height;
-  SampleItem? selectedMenu;
+  List<String> items = ['My Profile', 'Change Password', 'Logout'];
+  List<IconData> icons = [Icons.person, Icons.lock_open, Icons.logout];
+  late double width, height;
+  String? selectedMenu;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    Provider.of<SongProvider>(context,listen: false).getSongs();
+    Provider.of<SongProvider>(context, listen: false).getSongs();
   }
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -58,11 +61,13 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [for (var e in categories) item(e)],
                   ),
-                  SizedBox(width: width * 0.1,),
-                  if(selected == 0)...[
-                    const Expanded(
-                    child: SongsManagement(),
-                  )]else if(selected == 1)...[
+                  SizedBox(
+                    width: width * 0.1,
+                  ),
+                  if (selected == 0) ...[
+                    const Expanded(child: SongsManagement())
+                  ]
+                  else if(selected == 1)...[
                     const Expanded(child: EventManagement())
                   ]else if(selected == 2)...[
                     const Expanded(child: SingleChildScrollView(child: BandProfile()))
@@ -78,6 +83,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
       ),
     );
   }
+
   Widget item(
     Category item,
   ) {
@@ -142,36 +148,48 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                     Icons.person,
                     color: Colors.white,
                   ),
-                  CustomText(text: "Riz", ),
+                  CustomText(
+                    text: "Riz",
+                  ),
                   const Icon(
                     Icons.keyboard_arrow_down,
                     color: Colors.white,
                   ),
                 ],
               ),
-              onTap: (){
-                  if(controller.isOpen){
-                    controller.close();
-                  }else{
-                    controller.open();
-                  }
+              onTap: () {
+                if (controller.isOpen) {
+                  controller.close();
+                } else {
+                  controller.open();
+                }
               },
             );
           },
           menuChildren: List<MenuItemButton>.generate(
             3,
-                (int index) => MenuItemButton(
-              onPressed: () =>
-                  setState((){
-                    selectedMenu = SampleItem.values[index];
-                    selected = 3;
-                  }),
-              child: Text('Item ${index + 1}'),
+            (int index) => MenuItemButton(
+              onPressed: () => setState(() {
+                selectedMenu = items[index];
+                if (index == 0) {
+                  selected = 3;
+                }else if(index==1){
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context){
+                        return const ForgetPassword();
+                      }
+                  );
+                }else{
+
+                }
+              }),
+              child: Row(
+                children: [Icon(icons[index]), Text(items[index])],
+              ),
             ),
           ),
         ),
-
-
       ],
     );
   }
@@ -181,5 +199,6 @@ class Category {
   String name;
   int index;
   IconData icon;
+
   Category({required this.name, required this.index, required this.icon});
 }
