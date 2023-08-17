@@ -119,6 +119,9 @@ class _EventManagementState extends State<EventManagement> {
               width: width * 0.02,
             ),
             ButtonWidget(
+              onPressed: (){
+                showDialog(context: context, builder: (_)=>eventDialogue());
+              },
                 buttonName: "Create Event",
                 icon: const Icon(
                   Icons.add_circle_outline,
@@ -126,6 +129,156 @@ class _EventManagementState extends State<EventManagement> {
                 ))
           ],
         )
+      ],
+    );
+  }
+  Widget eventDialogue() {
+    return AlertDialog(
+      contentPadding: EdgeInsets.zero,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+      backgroundColor: Colors.grey.shade900,
+      content: SizedBox(
+        width: width * 0.45,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomText(
+                    text: "Create Event",
+                    color: Colors.yellow,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.cancel_outlined,
+                        color: Colors.white,
+                      ))
+                ],
+              ),
+            ),
+            const Divider(),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Column(
+                  children: [
+                    ButtonWidget(buttonName: "Upload poster",icon: const Icon(Icons.upload,color: Colors.black,),),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    CustomText(
+                      text: "upload only .jpeg's,.png's and .gif's images",
+                      color: Colors.grey.shade400,
+                      fontSize: 10,
+                    )
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(
+              height: height * 0.05,
+            ),
+            const Divider(),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: textField("Name")),
+                      const SizedBox(width: 10,),
+                      Expanded(child: textField("Venue")),
+                    ],
+                  ),const SizedBox(height: 20,),
+                  Row(
+                    children: [
+                      Expanded(child: textField("Start date and time")),
+                      const SizedBox(width: 10,),
+                      Expanded(child: textField("End date and time")),
+                    ],
+                  ),
+                  const SizedBox(height: 20,),
+                  textField("Description"),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.yellow),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 3),
+                        child: CustomText(
+                          text: "cancel",
+                          color: Colors.yellow,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                        color: Colors.yellow,
+                        borderRadius: BorderRadius.circular(16)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 8.0, vertical: 4),
+                      child: CustomText(
+                        text: "Save",
+                        color: Colors.black,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  Widget textField(String name,{String? hint}){
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomText(text: name),
+        Container(
+          margin: const EdgeInsets.only(top: 4),
+          height: height * 0.06,
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade500),color: Colors.black),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 5.0),
+              child: TextFieldWidget(controller: controller, hint: hint??"Enter ${name.toLowerCase()}"),
+            ))
       ],
     );
   }

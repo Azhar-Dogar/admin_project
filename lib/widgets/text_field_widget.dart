@@ -53,6 +53,7 @@ class TextFieldWidget extends StatelessWidget {
                 FilteringTextInputFormatter.allow(RegExp(r'^\+?\d*')),
               ],
             ],
+            style: TextStyle(color: Colors.grey.shade400),
             onSubmitted: onSubmitted,
             onChanged: onChanged,
             controller: controller,
