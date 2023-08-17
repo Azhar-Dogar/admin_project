@@ -17,8 +17,8 @@ class ButtonWidget extends StatelessWidget {
     return InkWell(
       onTap: onPressed,
       child: Container(
-        height: height * 0.06,
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(16),color: background ?? Colors.yellow),
+        height: 40,
+        decoration: BoxDecoration(border: Border.all(color: Colors.lightGreenAccent),borderRadius: BorderRadius.circular(16),color: background ?? Colors.lightGreenAccent),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 5),
           child: Row(
@@ -26,7 +26,7 @@ class ButtonWidget extends StatelessWidget {
               icon??const SizedBox(),
               CustomText(
                 text: buttonName!,
-                color: Colors.black,
+                color: background==Colors.black?Colors.lightGreenAccent:Colors.black,
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
