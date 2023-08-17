@@ -1,8 +1,10 @@
+import 'package:admin_project/providers/song_provider.dart';
 import 'package:admin_project/screens/dashboard/band_profile.dart';
 import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/screens/dashboard/events_management.dart';
 import 'package:admin_project/screens/dashboard/songs_management.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'Auth/forget_password.dart';
 import 'dashboard/user_profile.dart';
@@ -25,6 +27,12 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
 
   late double width,height;
   SampleItem? selectedMenu;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<SongProvider>(context,listen: false).getSongs();
+  }
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
