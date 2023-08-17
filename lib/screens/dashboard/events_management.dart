@@ -203,9 +203,9 @@ class _EventManagementState extends State<EventManagement> {
                   ),const SizedBox(height: 20,),
                   Row(
                     children: [
-                      Expanded(child: textField("Start date and time")),
+                      Expanded(child: textField("Start date and time",isDate: true,hint: "Select start sate and time")),
                       const SizedBox(width: 10,),
-                      Expanded(child: textField("End date and time")),
+                      Expanded(child: textField("End date and time",isDate: true,hint: "Select end date and time")),
                     ],
                   ),
                   const SizedBox(height: 20,),
@@ -265,7 +265,7 @@ class _EventManagementState extends State<EventManagement> {
       ),
     );
   }
-  Widget textField(String name,{String? hint}){
+  Widget textField(String name,{String? hint,bool? isDate}){
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -277,7 +277,24 @@ class _EventManagementState extends State<EventManagement> {
             decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade500),color: Colors.black),
             child: Padding(
               padding: const EdgeInsets.only(left: 5.0),
-              child: TextFieldWidget(controller: controller, hint: hint??"Enter ${name.toLowerCase()}"),
+              child: Row(
+                children: [
+                  Expanded(child: TextFieldWidget(controller: controller, hint: hint??"Enter ${name.toLowerCase()}")),
+                  if(isDate == true)...[
+                  Row(
+                    children: [
+                      Container(
+                        width: 1,
+                        color: Colors.grey.shade500,
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 3.0),
+                        child: Icon(Icons.calendar_month,color: Colors.white,),
+                      ),
+                    ],
+                  )
+                ]],
+              ),
             ))
       ],
     );
