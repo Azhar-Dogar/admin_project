@@ -1,11 +1,17 @@
+import 'dart:convert';
+import 'dart:html';
+import 'dart:typed_data';
+import 'package:http/http.dart' as http;
 import 'package:admin_project/widgets/button_widget.dart';
 import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SongsManagement extends StatefulWidget {
   const SongsManagement({super.key});
@@ -15,8 +21,11 @@ class SongsManagement extends StatefulWidget {
 }
 
 class _SongsManagementState extends State<SongsManagement> {
-  TextEditingController controller = TextEditingController();
+  TextEditingController title = TextEditingController();
+  TextEditingController city = TextEditingController();
+  TextEditingController searchController = TextEditingController();
   late double width, height;
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
@@ -120,7 +129,7 @@ class _SongsManagementState extends State<SongsManagement> {
                     ),
                     Expanded(
                         child: TextFieldWidget(
-                      controller: controller,
+                      controller: searchController,
                       hint: "Search Songs",
                       backColor: Colors.black,
                     ))
@@ -147,6 +156,7 @@ class _SongsManagementState extends State<SongsManagement> {
   }
 
   Widget songDialogue() {
+    File? tempFile;
     return AlertDialog(
       contentPadding: EdgeInsets.zero,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
@@ -200,14 +210,23 @@ class _SongsManagementState extends State<SongsManagement> {
                 ),
                 Column(
                   children: [
-                    ButtonWidget(buttonName: "Upload song",onPressed: () async {
-                     FilePickerResult? file = await FilePicker.platform.pickFiles(type: FileType.audio);
-                     if(file != null){
-                     Reference ref = FirebaseStorage.instance.ref().child("songs").child(file.files.first.name);
-                     await ref.putData(file.files.first.bytes!);
-                     print("path");
-                     print(file.files.first.name);
-                    }},),
+                    ButtonWidget(
+                      buttonName: "Upload song",
+                      onPressed: () async {
+                        FilePickerResult? file = await FilePicker.platform
+                            .pickFiles(type: FileType.audio);
+                        if (file != null) {
+                          setState(() {
+                            tempFile = File(file.files.first.bytes!, "first");
+                            print(tempFile!.size);
+                            title.text = file.files.first.name.split(".").first;
+                          });
+                          // uploadAudioWeb(file.files.first.bytes!, "songs", context);
+                          //  print("file name");
+                          //  print(file.files.first.name);
+                        }
+                      },
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
@@ -215,7 +234,15 @@ class _SongsManagementState extends State<SongsManagement> {
                       text: "Upload only .mp3 and .wav songs",
                       color: Colors.grey.shade400,
                       fontSize: 10,
-                    )
+                    ),
+                    if (tempFile != null) ...[
+                      Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        width: width * 0.2,
+                        color: Colors.yellow,
+                        child: const Icon(Icons.music_video_outlined),
+                      )
+                    ]
                   ],
                 )
               ],
@@ -226,13 +253,20 @@ class _SongsManagementState extends State<SongsManagement> {
                 children: [
                   Row(
                     children: [
-                      Expanded(child: textField("Title")),
-                      const SizedBox(width: 10,),
-                      Expanded(child: textField("City")),
+                      Expanded(child: textField("Title", title)),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          child: textField("City", city, onChanged: (v) {
+                        // autoCompleteCity(v);
+                      })),
                     ],
                   ),
-                  const SizedBox(height: 5,),
-                  textField("Genres"),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  textField("Genres", searchController),
                 ],
               ),
             ),
@@ -287,16 +321,61 @@ class _SongsManagementState extends State<SongsManagement> {
       ),
     );
   }
-  Widget textField(String name){
+
+  Widget textField(String name, TextEditingController controller,
+      {void Function(String)? onChanged}) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(text: name),
         Container(
-            decoration: BoxDecoration(border: Border.all(color: Colors.grey.shade500),color: Colors.black),
-            child: TextFieldWidget(controller: controller, hint: "Enter ${name.toLowerCase()}"))
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.shade500),
+                color: Colors.black),
+            child: TextFieldWidget(
+                onChanged: onChanged,
+                controller: controller,
+                hint: "Enter ${name.toLowerCase()}"))
       ],
     );
+  }
+
+  static Future<String> uploadAudioWeb(
+      Uint8List file, String child, BuildContext context,
+      {String contentType = "audio/mpeg"}) async {
+    try {
+      final firebaseStorage.FirebaseStorage storage =
+          firebaseStorage.FirebaseStorage.instance;
+
+      var reference = storage.ref().child(child);
+
+      var r = await reference.putData(
+          file, firebaseStorage.SettableMetadata(contentType: contentType));
+      if (r.state == firebaseStorage.TaskState.success) {
+        String url = await reference.getDownloadURL();
+        return url;
+      } else {
+        throw PlatformException(code: "404", message: "No download link found");
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<List<String>> autoCompleteCity(String input) async {
+    final response = await http.get(Uri.parse(
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=(cities)&key=AIzaSyDielMrqePDtgCxZUHSbWkKr4SyTZjXWAk'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final predictions = data['predictions'] as List<dynamic>;
+      List<String> citySuggestions = [];
+      for (var prediction in predictions) {
+        citySuggestions.add(prediction['description']);
+      }
+      return citySuggestions;
+    } else {
+      throw Exception('Failed to load city suggestions');
+    }
   }
 }

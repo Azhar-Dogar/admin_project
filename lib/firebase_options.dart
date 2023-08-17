@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyAP2ML1hNOEXdI9DlVDoMYfdZdlZrF8lHQ',
-    appId: '1:552912459156:web:24c2d74898fb36a478ab81',
+    appId: '1:552912459156:web:6b6cb701165d739278ab81',
     messagingSenderId: '552912459156',
     projectId: 'uprise-project',
     authDomain: 'uprise-project.firebaseapp.com',
