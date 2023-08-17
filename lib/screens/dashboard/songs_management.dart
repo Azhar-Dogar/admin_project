@@ -1,11 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:admin_project/widgets/button_widget.dart';
 import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SongsManagement extends StatefulWidget {
   const SongsManagement({super.key});
@@ -203,9 +207,8 @@ class _SongsManagementState extends State<SongsManagement> {
                     ButtonWidget(buttonName: "Upload song",onPressed: () async {
                      FilePickerResult? file = await FilePicker.platform.pickFiles(type: FileType.audio);
                      if(file != null){
-                     Reference ref = FirebaseStorage.instance.ref().child("songs").child(file.files.first.name);
-                     await ref.putData(file.files.first.bytes!);
-                     print("path");
+                    uploadAudioWeb(file.files.first.bytes!, "songs", context);
+                     print("file name");
                      print(file.files.first.name);
                     }},),
                     const SizedBox(
@@ -298,5 +301,26 @@ class _SongsManagementState extends State<SongsManagement> {
             child: TextFieldWidget(controller: controller, hint: "Enter ${name.toLowerCase()}"))
       ],
     );
+  }
+  static Future<String> uploadAudioWeb(
+      Uint8List file, String child, BuildContext context,
+      {String contentType = "audio/mpeg"}) async {
+    try {
+      final firebaseStorage.FirebaseStorage storage =
+          firebaseStorage.FirebaseStorage.instance;
+
+      var reference = storage.ref().child(child);
+
+      var r = await reference.putData(
+          file, firebaseStorage.SettableMetadata(contentType: contentType));
+      if (r.state == firebaseStorage.TaskState.success) {
+        String url = await reference.getDownloadURL();
+        return url;
+      } else {
+        throw PlatformException(code: "404", message: "No download link found");
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 }
