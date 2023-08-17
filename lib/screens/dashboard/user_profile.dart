@@ -19,11 +19,9 @@ class _UserProfileState extends State<UserProfile> {
   TextEditingController c4 = TextEditingController();
   TextEditingController c5 = TextEditingController();
   TextEditingController c6 = TextEditingController();
-  bool isEdit = false;
+  bool isReadOnly = true;
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
       decoration: BoxDecoration(
@@ -36,25 +34,28 @@ class _UserProfileState extends State<UserProfile> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(
-                text: "Profile",
+                text: isReadOnly? 'Profile': 'Edit Profile',
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
                 fontSize: 20,
               ),
-              ButtonWidget(
-                icon: const Icon(
-                  Icons.edit,
-                  color: Colors.white,
+              Visibility(
+                visible: isReadOnly,
+                child: ButtonWidget(
+                  icon: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                  onPressed: () {setState(() {
+                    isReadOnly = !isReadOnly;
+                  });},
+                  buttonName: "",
+                  background: Colors.white12,
                 ),
-                onPressed: () {isEdit = !isEdit;},
-                buttonName: "",
-                background: Colors.white12,
               ),
             ],
           ),
-          SizedBox(
-            height: 30,
-          ),
+          const SizedBox(height: 30,),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,12 +106,13 @@ class _UserProfileState extends State<UserProfile> {
                               fontSize: 25,
                             ),
                             const SizedBox(height: 40),
-                            fieldRow(c1,c2, "Username","Email ID","Username","Email"),
+                            fieldRow(c1,c2, "Username","Email ID","Username","Email", isReadOnly,true, Icons.person, Icons.mail),
                             const SizedBox(height: 20,),
-                            fieldRow(c3,c4, "Mobile Number","Facebook","Enter your mobile number","Facebook"),
+                            fieldRow(c3,c4, "Mobile Number","Facebook","Enter your mobile number","Facebook", isReadOnly, isReadOnly, Icons.phone, Icons.person),
                             const SizedBox(height: 20,),
-                            fieldRow(c5,c6, "Twitter","Instagram","Twitter","Instagram"),
+                            fieldRow(c5,c6, "Twitter","Instagram","Twitter","Instagram", isReadOnly, isReadOnly, Icons.person, Icons.person),
                             const SizedBox(height: 20,),
+
                           ],
                         ),
                       ),
@@ -119,23 +121,46 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ),
             ],
+          ),
+          Visibility(
+            visible: !isReadOnly,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ButtonWidget(
+                  buttonName: "Cancel",
+                  onPressed: (){setState(() {
+                    isReadOnly = !isReadOnly;
+                  });},
+                  background: Colors.black,
+                ),
+                const SizedBox(width: 20,),
+                ButtonWidget(
+                  buttonName: "Save",
+                  onPressed: (){setState(() {
+                    isReadOnly = !isReadOnly;
+                  });},
+                  background: Colors.lightGreenAccent,
+                )
+              ],
+            ),
           )
         ],
       ),
     );
   }
 
-  Widget fieldRow(TextEditingController c1, TextEditingController c2, String header1, String header2, String hint1, String hint2) {
+  Widget fieldRow(TextEditingController c1, TextEditingController c2, String header1, String header2, String hint1, String hint2, bool b1, bool b2, IconData i1, IconData i2) {
     return Row(
       children: [
-        fieldWidget(c1, header1, hint1),
+        fieldWidget(c1, header1, hint1, b1, i1),
         const SizedBox(width: 20),
-        fieldWidget(c2, header2, hint2),
+        fieldWidget(c2, header2, hint2, b2, i2),
       ],
     );
   }
 
-  Widget fieldWidget(TextEditingController c1, String header, String hint) {
+  Widget fieldWidget(TextEditingController c1, String header, String hint, bool b, IconData i) {
     return Expanded(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -150,9 +175,11 @@ class _UserProfileState extends State<UserProfile> {
             height: 10,
           ),
           TextFieldWidget(
-            height: 20,
+            height: 30,
             controller: c1,
             hint: hint,
+            isReadOnly: b,
+            icon: Icon(i, color: Colors.lightGreenAccent,),
           ),
         ],
       ),

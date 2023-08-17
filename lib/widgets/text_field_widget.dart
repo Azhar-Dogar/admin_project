@@ -10,6 +10,7 @@ class TextFieldWidget extends StatelessWidget {
     this.suffix,
     this.onChanged,
     this.maxLines = 1,
+    this.isReadOnly = false,
     this.secureText,
     this.showBorder = false,
     this.prefixWidget,
@@ -18,6 +19,7 @@ class TextFieldWidget extends StatelessWidget {
     this.onSubmitted,
     this.height,
     this.icon,
+
     Key? key,
   }) : super(key: key);
   void Function(String)? onChanged;
@@ -34,6 +36,7 @@ class TextFieldWidget extends StatelessWidget {
   Widget? prefixWidget;
   double? fontSize;
   Icon? icon;
+  bool isReadOnly;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -61,19 +64,19 @@ class TextFieldWidget extends StatelessWidget {
             onChanged: onChanged,
             controller: controller,
             maxLines: maxLines,
+            readOnly: isReadOnly,
             obscureText: secureText ?? false,
             decoration: InputDecoration(
-              // focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
-              // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
               //contentPadding: EdgeInsets.zero,
               hintText: hint,
               border: InputBorder.none,
               prefixIcon: icon,
+
               // isDense: true,
               hintStyle: TextStyle(fontSize: 16,color: Colors.grey.shade500)),
             ),
           ),
-        suffix??Container()
+        suffix??Container(),
       ],
     );
   }
