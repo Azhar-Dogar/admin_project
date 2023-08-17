@@ -11,7 +11,6 @@ import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,21 +31,24 @@ class _SongsManagementState extends State<SongsManagement> {
   Uint8List? fileBytes;
   Uint8List? imageBytes;
   String selectedValue = "";
+  String songUrl = "";
+  String posterUrl = "";
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-  Provider.of<SongProvider>(context,listen: false).getGenre();
+    Provider.of<SongProvider>(context, listen: false).getGenre();
   }
+
   late SongProvider songProvider;
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
     return Consumer<SongProvider>(
-      builder: (BuildContext context, value, Widget? child) {
+        builder: (BuildContext context, value, Widget? child) {
       songProvider = value;
-        return Column(
+      return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           header(),
@@ -54,7 +56,8 @@ class _SongsManagementState extends State<SongsManagement> {
             margin: const EdgeInsets.only(top: 10),
             color: Colors.grey.shade800,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -94,26 +97,35 @@ class _SongsManagementState extends State<SongsManagement> {
               ),
             ),
           ),
-          Container(
-            color: Colors.grey.shade900,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomText(
-                    text: "No Records Found",
-                    fontWeight: FontWeight.w500,
-                  )
-                ],
+          Expanded(
+            child: Container(
+              color: Colors.grey.shade900,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: (songProvider.songs.isNotEmpty)?Expanded(child: songsList()):
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: "No Records Found",
+                      fontWeight: FontWeight.w500,
+                    )
+                  ],
+                ),
               ),
             ),
           )
         ],
-      );}
-    );
+      );
+    });
   }
-
+  Widget songsList(){
+    return ListView.builder(
+        itemCount: songProvider.songs.length,
+        itemBuilder: (BuildContext context,index){
+      return CustomText(text: songProvider.songs[index].title);
+    });
+  }
   Widget header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -158,6 +170,9 @@ class _SongsManagementState extends State<SongsManagement> {
               width: width * 0.02,
             ),
             ButtonWidget(
+                background: CColors.primary,
+                textColor: Colors.black,
+                borderColor: CColors.primary,
                 onPressed: () {
                   showDialog(context: context, builder: (_) => songDialogue());
                 },
@@ -173,12 +188,13 @@ class _SongsManagementState extends State<SongsManagement> {
   }
 
   Widget songDialogue() {
-    if(selectedValue == ""){
-    selectedValue = songProvider.genreModel!.genre.first;}
+    if (selectedValue == "") {
+      selectedValue = songProvider.genreModel!.genre.first;
+    }
     File? tempFile;
     File? imageFile;
-    return StatefulBuilder(
-      builder: (BuildContext context, void Function(void Function()) _setState) {
+    return StatefulBuilder(builder:
+        (BuildContext context, void Function(void Function()) _setState) {
       return AlertDialog(
         contentPadding: EdgeInsets.zero,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
@@ -219,17 +235,23 @@ class _SongsManagementState extends State<SongsManagement> {
                 children: [
                   Column(
                     children: [
-                      ButtonWidget(buttonName: "Upload poster",onPressed: () async {
-                        FilePickerResult? file = await FilePicker.platform
-                            .pickFiles(type: FileType.image);
-                        if(file !=null){
-                          _setState((){
-                            imageBytes = file.files.first.bytes!;
-                            imageFile = File(file.files.first.bytes!, "");
-                          });
-                        }
-
-                      },),
+                      ButtonWidget(
+                        background: CColors.primary,
+                        textColor: Colors.black,
+                        borderColor: CColors.primary,
+                        buttonName: "Upload poster",
+                        onPressed: () async {
+                          FilePickerResult? file = await FilePicker.platform
+                              .pickFiles(type: FileType.image);
+                          if (file != null) {
+                            _setState(() {
+                              imageBytes = file.files.first.bytes!;
+                              imageFile = File(file.files.first.bytes!,
+                                  file.files.first.name);
+                            });
+                          }
+                        },
+                      ),
                       const SizedBox(
                         height: 5,
                       ),
@@ -238,23 +260,27 @@ class _SongsManagementState extends State<SongsManagement> {
                         color: Colors.grey.shade400,
                         fontSize: 10,
                       ),
-                      if(imageBytes != null)...[
-                      showImage(_setState)]
+                      if (imageBytes != null) ...[showImage(_setState)]
                     ],
                   ),
                   Column(
                     children: [
                       ButtonWidget(
+                        background: CColors.primary,
+                        textColor: Colors.black,
+                        borderColor: CColors.primary,
                         buttonName: "Upload song",
                         onPressed: () async {
                           FilePickerResult? file = await FilePicker.platform
                               .pickFiles(type: FileType.audio);
                           if (file != null) {
                             _setState(() {
-                              tempFile = File(file.files.first.bytes!, "first");
+                              tempFile = File(file.files.first.bytes!,
+                                  file.files.first.name);
                               print(tempFile);
                               fileBytes = file.files.first.bytes;
-                              title.text = file.files.first.name.split(".").first;
+                              title.text =
+                                  file.files.first.name.split(".").first;
                             });
                             //  print("file name");
                             //  print(file.files.first.name);
@@ -269,9 +295,7 @@ class _SongsManagementState extends State<SongsManagement> {
                         color: Colors.grey.shade400,
                         fontSize: 10,
                       ),
-                      if (fileBytes != null) ...[
-                        showMusic(_setState)
-                      ]
+                      if (fileBytes != null) ...[showMusic(_setState)]
                     ],
                   )
                 ],
@@ -304,20 +328,59 @@ class _SongsManagementState extends State<SongsManagement> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    ButtonWidget(background: Colors.black,buttonName: "Cancel",),
+                    ButtonWidget(
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                      textColor: CColors.primary,
+                      borderColor: CColors.primary,
+                      background: Colors.black,
+                      buttonName: "Cancel",
+                    ),
                     const SizedBox(
                       width: 10,
                     ),
-                    ButtonWidget(buttonName: "Save",onPressed: () async {
-                      if(fileBytes != null){
+                    ButtonWidget(
+                      background: CColors.primary,
+                      textColor: Colors.black,
+                      borderColor: CColors.primary,
+                      buttonName: "Save",
+                      onPressed: () async {
                         Functions.showLoaderDialog(context);
-                      String url = await songProvider.uploadAudioWeb(fileBytes!, "songs", context);
-                      songProvider.uploadSong(title.text, city.text,selectedValue,"", url);
-                      Navigator.pop(context);
-                      Navigator.pop(context);
-                      }else{
-                         Functions.showSnackBar(context, "Please pick a song");
-                      }},)
+                        if (fileBytes != null) {
+                          String url = await songProvider.uploadAudioWeb(
+                              fileBytes!, "songs", tempFile!.name, context);
+                          _setState(() {
+                            songUrl = url;
+                          });
+                        }
+                        if (imageBytes != null) {
+                          String url = await songProvider.uploadAudioWeb(
+                              imageBytes!, "images", imageFile!.name, context,
+                              contentType: "png");
+                          _setState(()  {
+                            posterUrl = url;
+                          });
+                        }
+                        if (songUrl != "" || posterUrl != "") {
+                          songProvider.uploadSong(title.text, city.text,
+                              selectedValue, posterUrl, songUrl);
+                          setState(() {
+                            _setState((){
+                              title.clear();
+                              city.clear();
+                              selectedValue == "";
+                              fileBytes == null;
+                              imageBytes == null;
+                            });
+                          });
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        } else {
+                          Functions.showSnackBar(context, "Please pick a song");
+                        }
+                      },
+                    )
                   ],
                 ),
               ),
@@ -327,13 +390,13 @@ class _SongsManagementState extends State<SongsManagement> {
             ],
           ),
         ),
-      );}
-    );
+      );
+    });
   }
-  Widget showMusic(void Function(void Function()) _setState){
-    return Stack(
-      children: [
-        Container(
+
+  Widget showMusic(void Function(void Function()) _setState) {
+    return Stack(children: [
+      Container(
         margin: const EdgeInsets.only(top: 5),
         width: width * 0.1,
         height: height * 0.15,
@@ -343,34 +406,47 @@ class _SongsManagementState extends State<SongsManagement> {
       Positioned(
           top: 1,
           right: 1,
-          child: IconButton(onPressed:(){
-            _setState((){
-              fileBytes = null;
-            });
-          }, icon: Icon(Icons.cancel_outlined,color: CColors.borderColor,)))
-      ]
-    );
+          child: IconButton(
+              onPressed: () {
+                _setState(() {
+                  fileBytes = null;
+                });
+              },
+              icon: Icon(
+                Icons.cancel_outlined,
+                color: CColors.borderColor,
+              )))
+    ]);
   }
- Widget showImage(void Function(void Function()) _setState){
-    return Stack(
-      children: [Container(
+
+  Widget showImage(void Function(void Function()) _setState) {
+    return Stack(children: [
+      Container(
         margin: const EdgeInsets.only(top: 5),
         width: width * 0.1,
         height: height * 0.15,
-        child: Image.memory(imageBytes!,fit: BoxFit.cover,),
+        child: Image.memory(
+          imageBytes!,
+          fit: BoxFit.cover,
+        ),
       ),
       Positioned(
         right: 1,
         top: 1,
-        child: IconButton(onPressed:(){
-          _setState((){
-            imageBytes = null;
-          });
-        }, icon: Icon(Icons.cancel_outlined,color: CColors.borderColor,)),
+        child: IconButton(
+            onPressed: () {
+              _setState(() {
+                imageBytes = null;
+              });
+            },
+            icon: Icon(
+              Icons.cancel_outlined,
+              color: CColors.borderColor,
+            )),
       )
-      ]
-    );
- }
+    ]);
+  }
+
   Widget textField(String name, TextEditingController controller,
       {void Function(String)? onChanged}) {
     return Column(
@@ -378,7 +454,9 @@ class _SongsManagementState extends State<SongsManagement> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(text: name),
-        const SizedBox(height: 5,),
+        const SizedBox(
+          height: 5,
+        ),
         Container(
             decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey.shade500),
@@ -391,17 +469,25 @@ class _SongsManagementState extends State<SongsManagement> {
     );
   }
 
- Widget dropDown(void Function(void Function()) _setState){
+  Widget dropDown(void Function(void Function()) _setState) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        CustomText(text: "Genre",fontSize: 16,fontWeight: FontWeight.w600,),
-        const SizedBox(height: 5,),
+        CustomText(
+          text: "Genre",
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
         Row(
           children: [
             Expanded(
               child: Container(
-                decoration: BoxDecoration(border: Border.all(color: CColors.borderColor),color: Colors.black),
+                decoration: BoxDecoration(
+                    border: Border.all(color: CColors.borderColor),
+                    color: Colors.black),
                 child: Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: DropdownButtonHideUnderline(
@@ -416,10 +502,10 @@ class _SongsManagementState extends State<SongsManagement> {
                       items: songProvider.genreModel!.genre
                           .map<DropdownMenuItem<String>>(
                             (value) => DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
-                        ),
-                      )
+                              value: value,
+                              child: Text(value),
+                            ),
+                          )
                           .toList(),
                     ),
                   ),
@@ -430,7 +516,8 @@ class _SongsManagementState extends State<SongsManagement> {
         ),
       ],
     );
- }
+  }
+
   Future<List<String>> autoCompleteCity(String input) async {
     final response = await http.get(Uri.parse(
         'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&types=(cities)&key=AIzaSyCNNmfTGsBatXy77JEAcjxuHCR2WSxVhvg'));

@@ -9,6 +9,15 @@ import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/services.dart';
 class SongProvider extends ChangeNotifier {
   GenreModel? genreModel;
+  List<SongModel> songs = [];
+  getSongs(){
+    FirebaseFirestore.instance.collection("Songs").snapshots().listen((event) {
+      event.docs.forEach((element) {
+      songs.add(SongModel.fromMap(element.data()));
+    });
+  });
+    // notifyListeners();
+  }
   getGenre() async {
     FirebaseFirestore.instance.collection("genre").snapshots().listen((event) {
       print(event.docs.first.data());
@@ -18,13 +27,13 @@ class SongProvider extends ChangeNotifier {
     print(genreModel?.genre.length);
   }
    Future<String> uploadAudioWeb(
-      Uint8List file, String child, BuildContext context,
-      {String contentType = "audio/mpeg"}) async {
+      Uint8List file, String child,String name, BuildContext context,
+      {String contentType = "audio/mp3"}) async {
     try {
       final firebaseStorage.FirebaseStorage storage =
           firebaseStorage.FirebaseStorage.instance;
 
-      var reference = storage.ref().child(child);
+      var reference = storage.ref().child(child).child(name);
 
       var r = await reference.putData(
           file, firebaseStorage.SettableMetadata(contentType: contentType));
