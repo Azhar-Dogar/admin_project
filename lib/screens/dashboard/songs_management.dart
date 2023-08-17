@@ -1,6 +1,9 @@
 import 'package:admin_project/widgets/button_widget.dart';
 import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -197,7 +200,14 @@ class _SongsManagementState extends State<SongsManagement> {
                 ),
                 Column(
                   children: [
-                    ButtonWidget(buttonName: "Upload song"),
+                    ButtonWidget(buttonName: "Upload song",onPressed: () async {
+                     FilePickerResult? file = await FilePicker.platform.pickFiles(type: FileType.audio);
+                     if(file != null){
+                     Reference ref = FirebaseStorage.instance.ref().child("songs").child(file.files.first.name);
+                     await ref.putData(file.files.first.bytes!);
+                     print("path");
+                     print(file.files.first.name);
+                    }},),
                     const SizedBox(
                       height: 5,
                     ),

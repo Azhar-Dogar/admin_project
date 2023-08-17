@@ -55,7 +55,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   SizedBox(width: width * 0.1,),
                   if(selected == 0)...[
                     const Expanded(
-                    child: UserProfile(),
+                    child: SongsManagement(),
                   )]else if(selected == 1)...[
                     const Expanded(child: EventManagement())
                   ]else...[
