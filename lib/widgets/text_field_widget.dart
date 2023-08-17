@@ -61,9 +61,8 @@ class TextFieldWidget extends StatelessWidget {
             maxLines: maxLines,
             obscureText: secureText ?? false,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.only(top: 5,left: 5),
-              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
-              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
+              // focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
+              // enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
               //contentPadding: EdgeInsets.zero,
               hintText: hint,
               border: InputBorder.none,
