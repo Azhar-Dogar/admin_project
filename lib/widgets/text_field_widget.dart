@@ -1,3 +1,4 @@
+import 'package:admin_project/extras/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -60,6 +61,9 @@ class TextFieldWidget extends StatelessWidget {
             maxLines: maxLines,
             obscureText: secureText ?? false,
             decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(top: 5,left: 5),
+              focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
+              enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: CColors.borderColor,width: 1)),
               //contentPadding: EdgeInsets.zero,
               hintText: hint,
               border: InputBorder.none,
