@@ -4,6 +4,7 @@ import 'package:admin_project/screens/dashboard/events_management.dart';
 import 'package:admin_project/screens/dashboard/songs_management.dart';
 import 'package:flutter/material.dart';
 
+import 'Auth/forget_password.dart';
 import 'dashboard/user_profile.dart';
 
 class DashBoardScreen extends StatefulWidget {
@@ -55,7 +56,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                   SizedBox(width: width * 0.1,),
                   if(selected == 0)...[
                     const Expanded(
-                    child: UserProfile(),
+                    child: ForgetPassword(),
                   )]else if(selected == 1)...[
                     const Expanded(child: EventManagement())
                   ]else...[

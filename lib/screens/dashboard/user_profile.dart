@@ -178,7 +178,7 @@ class _UserProfileState extends State<UserProfile> {
             height: 30,
             controller: c1,
             hint: hint,
-            isEditable: b,
+            isReadOnly: b,
             icon: Icon(i, color: Colors.lightGreenAccent,),
           ),
         ],
