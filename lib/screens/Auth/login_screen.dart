@@ -23,9 +23,10 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: Container(
           width: width * 0.5,
-          decoration: BoxDecoration(border: Border.all(color:CColors.borderColor)),
+          decoration:
+              BoxDecoration(border: Border.all(color: CColors.borderColor)),
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.symmetric(horizontal: 75.0, vertical: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -40,10 +41,52 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ],
                 ),
-                CustomText(text: "Email or username",fontSize: 16,fontWeight: FontWeight.w600,),
-                Container(
+                CustomText(
+                  text: "Email or username",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
                     height: height * 0.06,
-                    child: Center(child: TextFieldWidget(controller: emailController, hint: "Enter your email or username"))),
+                    child: Center(
+                        child: TextFieldWidget(
+                            controller: emailController,
+                            hint: "Enter your email or username"))),
+                const SizedBox(
+                  height: 30,
+                ),
+                CustomText(
+                  text: "Password",
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                    height: height * 0.06,
+                    child: Center(
+                        child: TextFieldWidget(
+                            controller: emailController,
+                            hint: "Enter your password"))),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Checkbox(
+                          value: false,
+                          onChanged: (v) {},
+                        ),
+                        CustomText(text: "Remember me",fontSize: 14,fontWeight: FontWeight.w600,)
+                      ],
+                    ),
+                    CustomText(text: "Forgot Password?",fontSize: 14,fontWeight: FontWeight.w600,)
+                  ],
+                )
               ],
             ),
           ),
