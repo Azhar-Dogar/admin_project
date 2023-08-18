@@ -2,6 +2,7 @@ import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:admin_project/extras/functions.dart';
+import 'package:admin_project/model/event_model.dart';
 import 'package:admin_project/providers/event_provider.dart';
 import 'package:admin_project/widgets/button_widget.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
@@ -77,18 +78,20 @@ class _EventManagementState extends State<EventManagement> {
               ),
             ),
           ),
-          Container(
-            color: Colors.grey.shade900,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 12.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CustomText(
-                    text: "No Records Found",
-                    fontWeight: FontWeight.w500,
-                  )
-                ],
+          Expanded(
+            child: Container(
+              color: Colors.grey.shade900,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 12.0),
+                child: (eventProvider.events.isEmpty)?Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CustomText(
+                      text: "No Records Found",
+                      fontWeight: FontWeight.w500,
+                    )
+                  ],
+                ):eventList(),
               ),
             ),
           )
@@ -321,7 +324,7 @@ class _EventManagementState extends State<EventManagement> {
                               });
                             }
                             await eventProvider.addEvent(
-                                name.text, venue.text, now, now, posterUrl);
+                                name.text, venue.text, now, now, posterUrl,description.text);
                             Navigator.pop(context);
                             Navigator.pop(context);
                           }},
@@ -414,5 +417,15 @@ class _EventManagementState extends State<EventManagement> {
             )),
       )
     ]);
+  }
+  Widget eventList(){
+    return ListView.builder(
+        itemCount: eventProvider.events.length,
+        itemBuilder: (BuildContext context,index){
+      return eventWidget(eventProvider.events[index]);
+    });
+  }
+  Widget eventWidget(EventModel event){
+    return CustomText(text: event.name);
   }
 }

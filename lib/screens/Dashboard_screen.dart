@@ -1,3 +1,4 @@
+import 'package:admin_project/providers/event_provider.dart';
 import 'package:admin_project/providers/song_provider.dart';
 import 'package:admin_project/screens/dashboard/band_profile.dart';
 import 'package:admin_project/widgets/custom_text.dart';
@@ -34,6 +35,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     // TODO: implement initState
     super.initState();
     Provider.of<SongProvider>(context, listen: false).getSongs();
+    Provider.of<EventProvider>(context, listen: false).getEvents();
   }
 
   @override

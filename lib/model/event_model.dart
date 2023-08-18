@@ -9,6 +9,7 @@ class EventModel {
 
   EventModel({
     this.id,
+    required this.description,
     required this.name,
     required this.venue,
     required this.startDate,
@@ -20,17 +21,18 @@ class EventModel {
     return {
       "id": id,
       "name": name,
+      "description":description,
       "venue": venue,
       "posterUrl": posterUrl,
       "startDate": startDate.millisecondsSinceEpoch,
       "endDate": endDate.millisecondsSinceEpoch,
     };
   }
-
   EventModel.fromMap(Map<String, dynamic> data) {
     id = data["id"];
     name = data["name"];
     venue = data["venue"];
+    description = data['description'];
     posterUrl = data["posterUrl"];
     startDate = DateTime.fromMillisecondsSinceEpoch(data["startDate"]);
     endDate = DateTime.fromMillisecondsSinceEpoch(data["endDate"]);
