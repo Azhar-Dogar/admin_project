@@ -7,6 +7,7 @@ class SongModel {
   late String songUrl;
   late DateTime createdAt;
   late DateTime updatedAt;
+  late bool isLive;
 
   SongModel({
     this.id,
@@ -17,6 +18,7 @@ class SongModel {
     required this.posterUrl,
     required this.songUrl,
     required this.updatedAt,
+    this.isLive = false,
   });
 
   Map<String, dynamic> toMap() {
@@ -29,6 +31,7 @@ class SongModel {
       "songUrl": songUrl,
       "createdAt": createdAt.millisecondsSinceEpoch,
       "updatedAt": updatedAt.millisecondsSinceEpoch,
+      "isLive": isLive,
     };
   }
 
@@ -41,5 +44,6 @@ class SongModel {
     songUrl = data["songUrl"];
     createdAt = DateTime.fromMillisecondsSinceEpoch(data["createdAt"]);
     updatedAt = DateTime.fromMillisecondsSinceEpoch(data["updatedAt"]);
+    isLive = data["isLive"] ?? false;
   }
 }

@@ -1,20 +1,22 @@
 import 'dart:convert';
 import 'dart:html';
-import 'dart:typed_data';
 import 'package:admin_project/extras/colors.dart';
+import 'package:admin_project/extras/constants.dart';
 import 'package:admin_project/extras/functions.dart';
+import 'package:admin_project/model/song_model.dart';
 import 'package:admin_project/providers/song_provider.dart';
+import 'package:admin_project/widgets/custom_asset_image.dart';
 import 'package:http/http.dart' as http;
 import 'package:admin_project/widgets/button_widget.dart';
 import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_core/firebase_core.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../../widgets/song_widget.dart';
 
 class SongsManagement extends StatefulWidget {
   const SongsManagement({super.key});
@@ -33,21 +35,25 @@ class _SongsManagementState extends State<SongsManagement> {
   String selectedValue = "";
   String songUrl = "";
   String posterUrl = "";
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Provider.of<SongProvider>(context, listen: false).getGenre();
   }
 
   late SongProvider songProvider;
+
   @override
   Widget build(BuildContext context) {
     width = MediaQuery.of(context).size.width;
     height = MediaQuery.of(context).size.height;
+
+    print(width);
     return Consumer<SongProvider>(
         builder: (BuildContext context, value, Widget? child) {
       songProvider = value;
+
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -56,42 +62,65 @@ class _SongsManagementState extends State<SongsManagement> {
             margin: const EdgeInsets.only(top: 10),
             color: Colors.grey.shade800,
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 12.0, horizontal: 25),
+              padding: const EdgeInsets.symmetric(vertical: 12.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  CustomText(
-                    text: "Poster",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Poster",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Title",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    flex: 3,
+                    child: CustomText(
+                      textAlign: TextAlign.center,
+                      text: "Title",
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Duration",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Duration",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Genre",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Genre",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Location",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Location",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Uploaded on",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Uploaded on",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Live",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Live",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
-                  CustomText(
-                    text: "Actions",
-                    fontWeight: FontWeight.w500,
+                  Expanded(
+                    child: CustomText(
+                      text: "Actions",
+                      textAlign: TextAlign.center,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ],
               ),
@@ -102,16 +131,17 @@ class _SongsManagementState extends State<SongsManagement> {
               color: Colors.grey.shade900,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: (songProvider.songs.isNotEmpty)?songsList():
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomText(
-                      text: "No Records Found",
-                      fontWeight: FontWeight.w500,
-                    )
-                  ],
-                ),
+                child: (songProvider.songs.isNotEmpty)
+                    ? songsList()
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomText(
+                            text: "No Records Found",
+                            fontWeight: FontWeight.w500,
+                          )
+                        ],
+                      ),
               ),
             ),
           )
@@ -119,13 +149,22 @@ class _SongsManagementState extends State<SongsManagement> {
       );
     });
   }
-  Widget songsList(){
-    return ListView.builder(
-        itemCount: songProvider.songs.length,
-        itemBuilder: (BuildContext context,index){
-      return CustomText(text: songProvider.songs[index].title);
-    });
+
+  Widget songsList() {
+    return ListView.separated(
+      itemCount: songProvider.songs.length,
+      itemBuilder: (BuildContext context, index) {
+        return SongWidget(
+          model: songProvider.songs[index],
+          key: Key(songProvider.songs[index].id!),
+        );
+      },
+      separatorBuilder: (BuildContext context, int index) {
+        return const SizedBox(height: 10);
+      },
+    );
   }
+
   Widget header() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -329,7 +368,7 @@ class _SongsManagementState extends State<SongsManagement> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ButtonWidget(
-                      onPressed: (){
+                      onPressed: () {
                         Navigator.pop(context);
                       },
                       textColor: CColors.primary,
@@ -358,7 +397,7 @@ class _SongsManagementState extends State<SongsManagement> {
                           String url = await songProvider.uploadAudioWeb(
                               imageBytes!, "images", imageFile!.name, context,
                               contentType: "png");
-                          _setState(()  {
+                          _setState(() {
                             posterUrl = url;
                           });
                         }
@@ -366,7 +405,7 @@ class _SongsManagementState extends State<SongsManagement> {
                           songProvider.uploadSong(title.text, city.text,
                               selectedValue, posterUrl, songUrl);
                           setState(() {
-                            _setState((){
+                            _setState(() {
                               title.clear();
                               city.clear();
                               selectedValue == "";
