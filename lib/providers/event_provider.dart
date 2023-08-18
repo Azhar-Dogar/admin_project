@@ -7,6 +7,9 @@ import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/services.dart';
 
 class EventProvider extends ChangeNotifier {
+  EventProvider() {}
+  List<EventModel> events = [];
+  CollectionReference ref = FirebaseFirestore.instance.collection("events");
   Future<String> uploadAudioWeb(
       Uint8List file, String child, String name, BuildContext context,
       {String contentType = "audio/mp3"}) async {
@@ -30,7 +33,7 @@ class EventProvider extends ChangeNotifier {
   }
 
   addEvent(String name, String venue, DateTime startDate, DateTime endDate,
-      String posterUrl) async {
+      String posterUrl, String description) async {
     var doc = FirebaseFirestore.instance.collection("events").doc();
     await doc.set(EventModel(
             name: name,
@@ -38,7 +41,16 @@ class EventProvider extends ChangeNotifier {
             startDate: startDate,
             posterUrl: posterUrl,
             endDate: endDate,
+            description: description,
             id: doc.id)
         .toMap());
+  }
+
+  getEvents() {
+    FirebaseFirestore.instance.collection("events").snapshots().listen((event) {
+      for (var element in event.docs) {
+        events.add(EventModel.fromMap(element.data()));
+      }
+    });
   }
 }

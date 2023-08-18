@@ -102,7 +102,7 @@ class _SongsManagementState extends State<SongsManagement> {
               color: Colors.grey.shade900,
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12.0),
-                child: (songProvider.songs.isNotEmpty)?Expanded(child: songsList()):
+                child: (songProvider.songs.isNotEmpty)?songsList():
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
