@@ -3,10 +3,13 @@ import 'dart:typed_data';
 import 'package:admin_project/model/genre_model.dart';
 import 'package:admin_project/model/song_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/services.dart';
+
+import '../model/post_model.dart';
 
 class SongProvider extends ChangeNotifier {
   GenreModel? genreModel;
@@ -57,16 +60,27 @@ class SongProvider extends ChangeNotifier {
       String songUrl) async {
     DateTime now = DateTime.now();
     var doc = FirebaseFirestore.instance.collection("Songs").doc();
-    await doc.set(SongModel(
-            id: doc.id,
-            title: title,
-            city: city,
-            createdAt: now,
-            genre: genre,
-            posterUrl: posterUrl,
-            songUrl: songUrl,
-            updatedAt: now)
-        .toMap());
+    var doc2 = FirebaseFirestore.instance.collection("feed").doc(doc.id);
+    var model = SongModel(
+      id: doc.id,
+      title: title,
+      city: city,
+      createdAt: now,
+      genre: genre,
+      posterUrl: posterUrl,
+      songUrl: songUrl,
+      bandId: FirebaseAuth.instance.currentUser!.uid,
+      updatedAt: now,);
+    await doc.set(
+        model.toMap());
+
+    var feed = PostModel(
+      id: doc2.id,
+      bandId: FirebaseAuth.instance.currentUser!.uid,
+      song: model.toMap(),
+      event: null,
+    );
+    doc2.set(feed.toMap());
   }
 
   updateSong(SongModel model) {

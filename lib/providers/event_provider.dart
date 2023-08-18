@@ -1,7 +1,9 @@
 import 'dart:typed_data';
 
 import 'package:admin_project/model/event_model.dart';
+import 'package:admin_project/model/post_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/services.dart';
@@ -37,19 +39,30 @@ class EventProvider extends ChangeNotifier {
   }
 
   addEvent(String name, String venue, DateTime startDate, DateTime endDate,
-      String posterUrl, String description, [String? id]) async {
+      String posterUrl, String description,
+      [String? id]) async {
     var doc = FirebaseFirestore.instance.collection("events").doc(id);
+    var doc2 = FirebaseFirestore.instance.collection("feed").doc(doc.id);
+    var model = EventModel(
+        name: name,
+        venue: venue,
+        startDate: startDate,
+        posterUrl: posterUrl,
+        endDate: endDate,
+        description: description,
+        id: doc.id,
+        bandId: FirebaseAuth.instance.currentUser!.uid);
     await doc.set(
-      EventModel(
-              name: name,
-              venue: venue,
-              startDate: startDate,
-              posterUrl: posterUrl,
-              endDate: endDate,
-              description: description,
-              id: doc.id)
-          .toMap(),
+      model.toMap(),
     );
+
+    var feed = PostModel(
+      id: doc2.id,
+      bandId: FirebaseAuth.instance.currentUser!.uid,
+      song: null,
+      event: model.toMap(),
+    );
+    doc2.set(feed.toMap());
   }
 
   getEvents() {

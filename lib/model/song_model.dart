@@ -8,6 +8,7 @@ class SongModel {
   late DateTime createdAt;
   late DateTime updatedAt;
   late bool isLive;
+  late String bandId;
 
   SongModel({
     this.id,
@@ -18,6 +19,7 @@ class SongModel {
     required this.posterUrl,
     required this.songUrl,
     required this.updatedAt,
+    required this.bandId,
     this.isLive = false,
   });
 
@@ -27,6 +29,7 @@ class SongModel {
       "title": title,
       "city": city,
       "genre": genre,
+      "bandId" : bandId,
       "posterUrl": posterUrl,
       "songUrl": songUrl,
       "createdAt": createdAt.millisecondsSinceEpoch,
@@ -42,6 +45,7 @@ class SongModel {
     genre = data["genre"];
     posterUrl = data["posterUrl"];
     songUrl = data["songUrl"];
+    bandId = data["bandId"];
     createdAt = DateTime.fromMillisecondsSinceEpoch(data["createdAt"]);
     updatedAt = DateTime.fromMillisecondsSinceEpoch(data["updatedAt"]);
     isLive = data["isLive"] ?? false;

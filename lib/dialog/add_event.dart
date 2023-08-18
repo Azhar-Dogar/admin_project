@@ -257,6 +257,9 @@ class _AddEventState extends State<AddEvent> {
                             posterUrl,
                             description.text,
                           );
+
+
+
                           Navigator.pop(context);
                           Navigator.pop(context);
                         }
