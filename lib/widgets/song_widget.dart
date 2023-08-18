@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../extras/constants.dart';
+import '../screens/dialog/song_upload.dart';
 
 class SongWidget extends StatefulWidget {
   const SongWidget({Key? key, required this.model}) : super(key: key);
@@ -76,7 +77,6 @@ class _SongWidgetState extends State<SongWidget> {
                 setState(() {
                   model.isLive = val;
                 });
-
                 Provider.of<SongProvider>(context, listen: false)
                     .updateSong(model);
               }),
@@ -84,9 +84,22 @@ class _SongWidgetState extends State<SongWidget> {
         Expanded(
           child: Row(
             children: [
-              const Icon(
-                Icons.edit,
-                color: Colors.white,
+              InkWell(
+                onTap: () {
+                  SongProvider songProvider = context.read<SongProvider>();
+
+                  showDialog(
+                    context: context,
+                    builder: (_) => SongUpload(
+                      model: widget.model,
+                      songProvider: songProvider,
+                    ),
+                  );
+                },
+                child: const Icon(
+                  Icons.edit,
+                  color: Colors.white,
+                ),
               ),
               const SizedBox(width: 10),
               InkWell(

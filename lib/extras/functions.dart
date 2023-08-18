@@ -1,4 +1,5 @@
 import 'package:admin_project/extras/colors.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class Functions{
@@ -27,10 +28,10 @@ class Functions{
         ),
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
         width: double.infinity,
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
-          children: const [CircularProgressIndicator()],
+          children: [CircularProgressIndicator()],
         ),
       ),
     );
@@ -42,4 +43,19 @@ class Functions{
       },
     );
   }
+
+
+
+  static Future<void> deleteFile(String url) async {
+    try {
+      final Reference fileRefFromUrl = FirebaseStorage.instance.refFromURL(url);
+
+      await FirebaseStorage.instance.ref(fileRefFromUrl.fullPath).delete();
+
+      print('File deleted successfully!');
+    } catch (e) {
+      print('Error deleting image: $e');
+    }
+  }
+
 }
