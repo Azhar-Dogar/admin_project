@@ -5,6 +5,7 @@ import 'package:admin_project/model/song_model.dart';
 import 'package:admin_project/providers/song_provider.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import '../../extras/colors.dart';
 import '../../extras/functions.dart';
 import '../../widgets/button_widget.dart';
@@ -145,6 +146,7 @@ class _SongUploadState extends State<SongUpload> {
                       onPressed: () async {
                         FilePickerResult? file = await FilePicker.platform
                             .pickFiles(type: FileType.audio);
+
                         if (file != null) {
                           setState(() {
                             tempFile = File(
@@ -222,11 +224,15 @@ class _SongUploadState extends State<SongUpload> {
                             context, "Please upload song first");
                         return;
                       }
+
+                      await getAudioDuration();
+
                       if (imageBytes == null) {
                         Functions.showSnackBar(
                             context, "Please upload image first");
                         return;
                       }
+
                       if (title.text.isEmpty) {
                         Functions.showSnackBar(
                             context, "Please enter image name first");
@@ -449,5 +455,37 @@ class _SongUploadState extends State<SongUpload> {
     } else {
       throw Exception('Failed to load city suggestions');
     }
+  }
+
+
+  Future<void> getAudioDuration() async {
+    AudioPlayer audioPlayer = AudioPlayer();
+
+    await audioPlayer.setAudioSource(MyJABytesSource(fileBytes!));
+    // await audioPlayer.play();
+
+    print("HEHEHHEH");
+    Duration? total = audioPlayer.duration;
+    print(total?.inSeconds);
+    print("HEHEHHEH");
+
+
+  }
+}
+
+class MyJABytesSource extends StreamAudioSource {
+  final Uint8List _buffer;
+
+  MyJABytesSource(this._buffer) : super(tag: 'MyAudioSource');
+
+  @override
+  Future<StreamAudioResponse> request([int? start, int? end]) async {
+    return StreamAudioResponse(
+      sourceLength: _buffer.length,
+      contentLength: (end ?? _buffer.length) - (start ?? 0),
+      offset: start ?? 0,
+      stream: Stream.fromIterable([_buffer.sublist(start ?? 0, end)]),
+      contentType: 'audio/wav',
+    );
   }
 }

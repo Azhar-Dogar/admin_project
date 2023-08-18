@@ -2,7 +2,7 @@ import 'package:admin_project/extras/colors.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
-class Functions{
+class Functions {
   static showSnackBar(BuildContext context, String message, {Color? color}) {
     color ??= CColors.primary;
     final snackBar = SnackBar(
@@ -44,8 +44,6 @@ class Functions{
     );
   }
 
-
-
   static Future<void> deleteFile(String url) async {
     try {
       final Reference fileRefFromUrl = FirebaseStorage.instance.refFromURL(url);
@@ -57,5 +55,4 @@ class Functions{
       print('Error deleting image: $e');
     }
   }
-
 }
