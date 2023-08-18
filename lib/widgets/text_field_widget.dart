@@ -19,7 +19,7 @@ class TextFieldWidget extends StatelessWidget {
     this.onSubmitted,
     this.height,
     this.icon,
-
+    this.enabled = true,
     Key? key,
   }) : super(key: key);
   void Function(String)? onChanged;
@@ -37,6 +37,7 @@ class TextFieldWidget extends StatelessWidget {
   double? fontSize;
   Icon? icon;
   bool isReadOnly;
+  bool enabled;
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -59,6 +60,7 @@ class TextFieldWidget extends StatelessWidget {
                 FilteringTextInputFormatter.allow(RegExp(r'^\+?\d*')),
               ],
             ],
+            enabled: enabled,
             style: TextStyle(color: Colors.grey.shade400),
             onSubmitted: onSubmitted,
             onChanged: onChanged,

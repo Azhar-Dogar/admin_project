@@ -3,7 +3,6 @@ import 'dart:typed_data';
 import 'package:admin_project/model/genre_model.dart';
 import 'package:admin_project/model/song_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebaseStorage;
 import 'package:flutter/services.dart';
@@ -20,7 +19,6 @@ class SongProvider extends ChangeNotifier {
   }
   getGenre() async {
     FirebaseFirestore.instance.collection("genre").snapshots().listen((event) {
-      print(event.docs.first.data());
      genreModel = GenreModel.fromMap(event.docs.first.data());
      print(genreModel?.genre.length);
     });

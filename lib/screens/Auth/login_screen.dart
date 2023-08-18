@@ -4,7 +4,6 @@ import 'package:admin_project/screens/Dashboard_screen.dart';
 import 'package:admin_project/widgets/custom_text.dart';
 import 'package:admin_project/widgets/text_field_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:utility_extensions/utility_extensions.dart';
 
@@ -106,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 100,),
+                    padding: const EdgeInsets.symmetric(horizontal: 100,),
                   ),
                   onPressed: () {
                     if(!emailController.text.isValidEmail){
@@ -117,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       signin();
                     }
                   },
-                  child: Text("Login"),
+                  child: const Text("Login"),
                 ),
               ],
             ),

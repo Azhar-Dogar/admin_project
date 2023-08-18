@@ -45,6 +45,8 @@ dependencies:
   utility_extensions:
     git:
       url: https://github.com/hamzali4642/utility_extensions
+  intl: ^0.18.1
+  omni_datetime_picker: ^1.0.8
 dev_dependencies:
   flutter_test:
     sdk: flutter
